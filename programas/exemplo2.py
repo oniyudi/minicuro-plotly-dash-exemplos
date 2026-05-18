@@ -8,38 +8,35 @@ df = df[['time_utc', 'svid', 'elev', 's4']]
 
 df = df[df['svid'].isin(range(1, 37))]
 
-# df['s4'] = df['s4'].fillna(df['s4'].mean(numeric_only=True))
+# df_scatter = df[df['svid'].isin(x for x in range(1,20) if x not in [6, 13, 15, 19])]
+df_scatter = df[df['svid'].isin(range(1,20))]
+df_scatter = df_scatter[df_scatter['time_utc'].between('2025-03-21 01:00:00', '2025-03-21 01:30:00')]
 
-df_single = df[df['svid'].isin([19, 6])]
-df_single = df_single[df_single['time_utc'].between('2025-03-21 00:00:00', '2025-03-21 00:50:00')]
+fig_scatter = px.scatter(df_scatter, x='time_utc', y='s4', color='s4', text='svid', color_continuous_scale='bluered', title='Índice S4 dos satélites 1 a 19 entre 00:00 e 00:20 do dia 21 de março de 2025')
+fig_scatter.update_traces(textposition='bottom right')
 
-df_bar = df[df['svid'].isin(range(1,20))]
-# df_bar = df_bar[df_bar['time_utc'].between('2025-03-21 00:00:00', '2025-03-21 01:00:00')]
-df_bar = df_bar[df_bar['time_utc'] == '2025-03-21 00:35:00']
-df_bar['svid'] = df_bar['svid'].astype(str)
-
-fig = px.line(df, x='time_utc', y='s4', color='svid', title='Índice S4 ao longo do tempo para cada satélite')
-
-fig_single = px.line(df_single, x='time_utc', y='s4', color='svid', text='elev', title='Índice S4 dos satélites 6 e 19 entre 00:00 e 00:50 do dia 21 de março de 2025')
-fig_single.update_traces(textposition='bottom right')
-
-fig_bar = px.bar(df_bar, x='svid', y='s4', color='s4', text='s4', title='Índice S4 dos satélites 1 a 19 às 00:01 do dia 21 de março de 2025')
+fig_scatter_2 = px.scatter(df_scatter, x='time_utc', y='s4', color='s4', symbol='svid', labels={'svid': 'Satélites', 's4': 'Índice S4'}, color_continuous_scale=[(0, "blue"), (0.5, "green"), (1, "red")], title='Índice S4 dos satélites 1 a 19 entre 00:00 e 00:20 do dia 21 de março de 2025')
+fig_scatter_2.update_layout(
+    legend=dict(
+        orientation="h", # coloca a legenda horizontal
+        yanchor="top", # ancoragem superior
+        y=-0.25, # posição vertical da legenda
+        xanchor="center", # ancoragem central
+        x=0.5 # posição horizontal da legenda
+    )
+)
 
 app = Dash(__name__)
 app.layout = html.Div(children=[
     html.H1(children='Exemplo de Gráfico tipo Line com Plotly Express', style={'textAlign': 'center'}),
 
     dcc.Graph(
-        id='s4-line-graph',
-        figure=fig
+        id='s4-scatter-graph',
+        figure=fig_scatter
     ),
     dcc.Graph(
-        id='s4-line-graph-single',
-        figure=fig_single
-    ),
-    dcc.Graph(
-        id='s4-bar-graph',
-        figure=fig_bar
+        id='s4-scatter-graph-2',
+        figure=fig_scatter_2
     )
 ])
 if __name__ == '__main__':
