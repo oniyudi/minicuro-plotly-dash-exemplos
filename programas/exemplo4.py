@@ -5,11 +5,8 @@ from dash import Dash, Input, Output, dcc, html
 df = pd.read_csv('../base_dados/base_de_dados.ismr')
 df = df[['time_utc', 'svid', 'elev', 's4']]
 
-df = df[df['time_utc'].between('2025-03-21 00:00:00', '2025-03-21 00:10:00')]
-
 df_bar = df[df['time_utc'] == '2025-03-21 00:05:00']
 df_bar['svid'] = df_bar['svid'].astype(str)
-# fig_bar = px.bar(df_bar, x='svid', y='s4', color='s4', title='Índice S4 dos satélites 1 a 36 no instante 00:05 do dia 21 de março de 2025')
 
 app = Dash(__name__)
 app.layout = html.Div(children=[
@@ -31,7 +28,8 @@ app.layout = html.Div(children=[
     Input('color-dropdown', 'value')
 )
 def update_bar_chart(selected_color):
-    fig_bar = px.bar(df_bar, x='svid', y='s4', color='elev', color_continuous_scale=selected_color.lower(), title='Índice S4 dos satélites 1 a 36 no instante 00:05 do dia 21 de março de 2025')
+    fig_bar = px.bar(df_bar, x='svid', y='s4', color='elev', color_continuous_scale=selected_color.lower(), labels={'s4': 'Índice S4', 'elev': 'Elevação', 'svid': 'Satélite'}, title='Índice S4 dos satélites no instante 00:05 do dia 21 de março de 2025')
+    fig_bar.update_traces(marker_line_color='black', marker_line_width=1.5)
     return fig_bar
 
 if __name__ == '__main__':

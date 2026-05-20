@@ -1,0 +1,52 @@
+.group {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 20px;
+    max-width: 45%;
+}
+
+.input-group {
+    display: flex;
+    width: 100%;
+    max-width: 100%;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
+.label-input {
+    border: 1px solid #007BFF;
+    border-radius: 4px 0 0 4px;
+    border-right: none;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 4px;
+    background-color: rgb(160, 252, 154);
+    width: 49%;
+}
+
+.input-number {
+    flex-grow: 1;
+    border: 1px solid #007BFF;
+    border-radius: 0 4px 4px 0;
+    outline: none;
+    width: 200px;
+}
+
+.input-group input:focus {
+    border-color: #007BFF;
+}
+
+.dropdown-color {
+    width: 51%;
+}
+
+.dropdown-color div {
+    border-radius: 0 4px 4px 0;
+    border: 1px solid #007BFF;
+}
+
+.dropdown-color div button {
+    border: none;
+}

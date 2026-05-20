@@ -17,6 +17,7 @@ df_bar = df_bar[df_bar['time_utc'] == '2025-03-21 00:35:00']
 # usar o astype(str) para converter os valores de svid para string, garantindo que sejam tratados como categorias no gráfico de barras
 df_bar['svid'] = df_bar['svid'].astype(str)
 
+# dados para o gráfico polar
 df_polar = df[df['svid'].isin(range(1,37))]
 df_polar = df_polar[df_polar['time_utc'].between('2025-03-21 00:00:00', '2025-03-21 00:25:00')]
 df_polar = df_polar[df_polar['s4'].notna()]
