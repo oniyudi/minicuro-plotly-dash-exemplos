@@ -1,3 +1,5 @@
+import time
+
 import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
@@ -9,6 +11,9 @@ df = df[['time_utc', 'svid', 'elev', 's4']]
 df_bar = df[df['time_utc'] == '2025-03-21 00:05:00']
 df_bar['svid'] = df_bar['svid'].astype(str)
 
+# pegando exemplos de cores para o dropdown
+color_options = px.colors.named_colorscales()
+
 app = Dash(__name__)
 app.layout = html.Div(children=[
     html.Div(children=[
@@ -17,8 +22,8 @@ app.layout = html.Div(children=[
             html.Div(children=[
                 dcc.Dropdown(
                 id='color-dropdown',
-                options=['Inferno', 'Viridis', 'Cividis', 'Bluered', 'Blues', 'Reds', 'Greens', 'Purples', 'Oranges'],
-                value='Viridis',
+                options=color_options,
+                value='viridis',
                 clearable=False # impede que o usuário limpe a seleção, garantindo que sempre haja uma opção selecionada
                 ),
             ], className='dropdown-color')
@@ -29,9 +34,11 @@ app.layout = html.Div(children=[
 
         ], className='input-group'),
     ], className='group'),
-    dcc.Graph(
+    dcc.Loading(
+        dcc.Graph(
         id='s4-bar-graph',
-        # figure=fig_bar
+        ),
+        type='cube',
     )
 ])
 
@@ -84,8 +91,9 @@ def update_bar_chart(selected_color, elev_value):
         bgcolor="rgba(255, 255, 255, 0.8)", # Fundo branco com 80% de opacidade
         bordercolor="black",
         borderwidth=1
+        )
     )
-    )
+    time.sleep(0.5) 
     return fig_bar
 
 if __name__ == '__main__':
