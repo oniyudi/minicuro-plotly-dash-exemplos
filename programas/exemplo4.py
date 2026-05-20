@@ -8,12 +8,15 @@ df = df[['time_utc', 'svid', 'elev', 's4']]
 df_bar = df[df['time_utc'] == '2025-03-21 00:05:00']
 df_bar['svid'] = df_bar['svid'].astype(str)
 
+# pegando exemplos de cores para o dropdown
+color_options = px.colors.named_colorscales()
+
 app = Dash(__name__)
 app.layout = html.Div(children=[
     dcc.Dropdown(
         id='color-dropdown',
-        options=['Inferno', 'Viridis', 'Cividis', 'Bluered', 'Blues', 'Reds', 'Greens', 'Purples', 'Oranges'],
-        value='Viridis',
+        options=color_options,
+        value='viridis',
         style={'width': '50%', 'margin': 'auto'},
         clearable=False # impede que o usuário limpe a seleção, garantindo que sempre haja uma opção selecionada
     ),
